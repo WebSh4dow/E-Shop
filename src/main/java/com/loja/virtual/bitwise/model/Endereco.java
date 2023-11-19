@@ -1,5 +1,6 @@
 package com.loja.virtual.bitwise.model;
 
+import com.loja.virtual.bitwise.enums.TipoEndereco;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -33,6 +34,17 @@ public class Endereco implements Serializable {
     @JoinColumn(name = "pessoa_id", nullable = false,
             foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "pessoa_fk"))
     private Pessoa pessoa;
+
+    @Enumerated(EnumType.STRING)
+    private TipoEndereco tipoEndereco;
+
+    public void setTipoEndereco(TipoEndereco tipoEndereco) {
+        this.tipoEndereco = tipoEndereco;
+    }
+
+    public TipoEndereco getTipoEndereco() {
+        return tipoEndereco;
+    }
 
     public Long getId() {
         return id;
