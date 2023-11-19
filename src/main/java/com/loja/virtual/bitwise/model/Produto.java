@@ -16,27 +16,35 @@ public class Produto implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "seq_produto")
     private Long id;
 
+    @Column(nullable = false)
     private String tipoUnidade;
 
+    @Column(nullable = false)
     private String nome;
 
-    @Column(columnDefinition = "text" , length = 2000)
+    @Column(columnDefinition = "text" , length = 2000, nullable = false)
     private String descricao;
 
+    @Column(nullable = false)
     private Double peso;
 
+    @Column(nullable = false)
     private Double largura;
 
+    @Column(nullable = false)
     private Double altura;
 
+    @Column(nullable = false)
     private Double profundidade;
     @ManyToOne
     @JoinColumn(name = "nota_fiscal_compra_id", nullable = false,
             foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "nota_fiscal_compra_fk"))
     private NotaFiscalCompra notaFiscalCompra;
 
+    @Column(nullable = false)
     private BigDecimal valorVenda = BigDecimal.ZERO;
 
+    @Column(nullable = false)
     private Integer qtdEstoque = 0;
 
     private Integer qtdAlertaEstoque = 0;
