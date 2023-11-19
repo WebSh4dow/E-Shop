@@ -19,6 +19,7 @@ public class Usuario implements UserDetails {
     private String login;
 
     private String senha;
+
     @Temporal(TemporalType.DATE)
     private Date dataAtualSenha;
 
