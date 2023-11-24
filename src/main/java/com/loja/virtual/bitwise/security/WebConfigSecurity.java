@@ -14,7 +14,8 @@ import javax.servlet.http.HttpSessionListener;
 public class WebConfigSecurity extends WebSecurityConfigurerAdapter implements HttpSessionListener {
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(HttpMethod.GET,"/acessos/salvarAcesso");
+        web.ignoring().antMatchers(HttpMethod.GET,"/acessos/buscar-por-descricao/**");
+        web.ignoring().antMatchers(HttpMethod.DELETE,"/acessos/removerAcessoPorId");
         web.ignoring().antMatchers(HttpMethod.POST,"/acessos/salvarAcesso","/acessos/removerAcesso");
 
     }

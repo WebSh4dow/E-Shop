@@ -1,5 +1,6 @@
 package com.loja.virtual.bitwise.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.*;
 import java.util.Objects;
@@ -17,6 +18,7 @@ public class Acesso implements GrantedAuthority {
     @Column(nullable = false)
     private String descricao;
     @Override
+    @JsonIgnore
     public String getAuthority() {
         return this.descricao;
     }
