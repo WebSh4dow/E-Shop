@@ -48,15 +48,15 @@ class ApplicationTests extends TestCase {
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		ResultActions retornoAPI = mockMvc
-									.perform(MockMvcRequestBuilders.post(REQUEST_MAPPING_ACESSOS + "/salvarAcesso")
-											.content(objectMapper.writeValueAsString(acesso))
-											.accept(MediaType.APPLICATION_JSON)
-											.contentType(MediaType.APPLICATION_JSON));
+				.perform(MockMvcRequestBuilders.post(REQUEST_MAPPING_ACESSOS + "/salvarAcesso")
+						.content(objectMapper.writeValueAsString(acesso))
+						.accept(MediaType.APPLICATION_JSON)
+						.contentType(MediaType.APPLICATION_JSON));
 
 		System.out.println("Retorno da api na chamada da controller de [salvar acessos]: " + retornoAPI.andReturn().getResponse().getContentAsString());
 
 		Acesso objetoRetorno = objectMapper
-				.readValue(retornoAPI.andReturn().getResponse().getContentAsString(),Acesso.class);
+				.readValue(retornoAPI.andReturn().getResponse().getContentAsString(), Acesso.class);
 
 		assertEquals(acesso.getDescricao(), objetoRetorno.getDescricao());
 	}
