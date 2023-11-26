@@ -3,12 +3,12 @@ package com.loja.virtual.bitwise.security;
 import com.loja.virtual.bitwise.config.ApplicationContextLoad;
 import com.loja.virtual.bitwise.model.Usuario;
 import com.loja.virtual.bitwise.repository.UsuarioRepository;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 
 
@@ -38,33 +38,41 @@ public class JwtokenAutenticationService {
         response.getWriter().write("{\"Authorization\": \"" + token + "\"}");
     }
 
-    public Authentication getAuthentication(HttpServletRequest request, HttpServletResponse response) {
+    public Authentication getAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String token = request.getHeader(HEADER);
+        try {
+            if (token != null) {
+                String cleaningToken = token.replace(PREFIXO_TOKEN, "").trim();
 
-        if (token != null) {
-            String cleaningToken = token.replace(PREFIXO_TOKEN, "").trim();
+                String user = Jwts.parser()
+                        .setSigningKey(SECRET)
+                        .parseClaimsJws(cleaningToken)
+                        .getBody().getSubject();
 
-            String user = Jwts.parser()
-                    .setSigningKey(SECRET)
-                    .parseClaimsJws(cleaningToken)
-                    .getBody().getSubject();
+                if (user != null) {
+                    Usuario usuario = ApplicationContextLoad
+                            .getApplicationContext()
+                            .getBean(UsuarioRepository.class).findUsuarioByLogin(user);
 
-            if (user != null) {
-                Usuario usuario = ApplicationContextLoad
-                        .getApplicationContext()
-                        .getBean(UsuarioRepository.class).findUsuarioByLogin(user);
-
-                if (usuario != null) {
-                    return new UsernamePasswordAuthenticationToken(
-                            usuario.getLogin(),
-                            usuario.getPassword(),
-                            usuario.getAuthorities());
+                    if (usuario != null) {
+                        return new UsernamePasswordAuthenticationToken(
+                                usuario.getLogin(),
+                                usuario.getPassword(),
+                                usuario.getAuthorities());
+                    }
                 }
+
             }
+        } catch (MalformedJwtException | SignatureException e) {
+            response.getWriter().write("Token fornecido incorreto.");
+
+        } catch (ExpiredJwtException e) {
+            response.getWriter().write("Token foi expirado, efetue o login de novo.");
+
+        } finally {
+            filterCors(response);
 
         }
-
-        filterCors(response);
         return null;
     }
 

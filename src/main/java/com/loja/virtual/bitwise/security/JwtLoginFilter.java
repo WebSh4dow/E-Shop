@@ -3,6 +3,7 @@ package com.loja.virtual.bitwise.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loja.virtual.bitwise.model.Usuario;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -16,6 +17,7 @@ import java.io.IOException;
 
 
 public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
+
     protected JwtLoginFilter(String url, AuthenticationManager authenticationManager) {
         super(new AntPathRequestMatcher(url));
         setAuthenticationManager(authenticationManager);
@@ -33,6 +35,15 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
             new JwtokenAutenticationService().addAuthentication(response,authResult.getName());
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        if (failed instanceof BadCredentialsException) {
+            response.getWriter().write("Login atual não foi encontrado");
+        } else {
+            response.getWriter().write("Falha ao logar: " + failed.getMessage());
         }
     }
 }

@@ -12,12 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JwtApiAutenticationFilter extends GenericFilterBean {
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         Authentication authentication = new JwtokenAutenticationService()
                 .getAuthentication((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        filterChain.doFilter(servletRequest,servletResponse);
+        filterChain.doFilter(servletRequest, servletResponse);
     }
+
 }
