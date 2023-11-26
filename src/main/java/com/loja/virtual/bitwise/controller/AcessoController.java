@@ -6,8 +6,8 @@ import com.loja.virtual.bitwise.service.AcessoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -33,6 +33,7 @@ public class AcessoController {
     }
 
     @DeleteMapping(value = "/removerAcessoPorId/{id}")
+    //@Secured({"ROLE_GERENTE","ROLE_ADMIN"})
     public ResponseEntity <?> removerAcessoPorId(@PathVariable Long id) {
         acessoService.remover(id);
         return new ResponseEntity<>("Acesso removido com sucesso!!!",HttpStatus.OK);
