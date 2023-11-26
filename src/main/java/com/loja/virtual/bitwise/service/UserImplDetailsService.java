@@ -14,6 +14,7 @@ public class UserImplDetailsService implements UserDetailsService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -23,6 +24,6 @@ public class UserImplDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Usuário não foi encontrado.");
         }
 
-        return new User(usuario.getUsername(),usuario.getPassword(),usuario.getAuthorities());
+        return new User(usuario.getLogin(),usuario.getPassword(),usuario.getAuthorities());
     }
 }
