@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loja.virtual.bitwise.controller.AcessoController;
+import com.loja.virtual.bitwise.exception.ExceptionErro;
 import com.loja.virtual.bitwise.model.Acesso;
 import com.loja.virtual.bitwise.repository.AcessoRepository;
 import com.loja.virtual.bitwise.service.AcessoService;
@@ -173,7 +174,7 @@ class ApplicationTests extends TestCase {
 	}
 
 	@Test
-	void testeCadastroAcesso() {
+	void testeCadastroAcesso() throws ExceptionErro {
 		Acesso acesso = new Acesso();
 
 		acesso.setDescricao("ROLE_NORMAL");
