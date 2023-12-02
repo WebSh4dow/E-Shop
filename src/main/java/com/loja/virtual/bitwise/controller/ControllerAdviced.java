@@ -1,5 +1,6 @@
 package com.loja.virtual.bitwise.controller;
 
+import com.loja.virtual.bitwise.exception.ExceptionErro;
 import com.loja.virtual.bitwise.model.dto.ObjetoErroDTO;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -17,6 +18,17 @@ import java.util.List;
 
 @RestControllerAdvice
 public class ControllerAdviced extends ResponseEntityExceptionHandler {
+
+
+    @ExceptionHandler(ExceptionErro.class)
+    public ResponseEntity<Object> handleException(ExceptionErro ex) {
+        ObjetoErroDTO objetoErroDTO = new ObjetoErroDTO();
+
+        objetoErroDTO.setError(ex.getMessage());
+        objetoErroDTO.setCode(HttpStatus.BAD_REQUEST.toString());
+
+        return new ResponseEntity<Object>(objetoErroDTO, HttpStatus.BAD_REQUEST);
+    }
 
     @Override
     @ExceptionHandler({Exception.class, RuntimeException.class, Throwable.class})

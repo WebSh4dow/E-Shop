@@ -15,11 +15,16 @@ public class JwtApiAutenticationFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        Authentication authentication = new JwtokenAutenticationService()
-                .getAuthentication((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse);
+        try {
+            Authentication authentication = new JwtokenAutenticationService()
+                    .getAuthentication((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        filterChain.doFilter(servletRequest, servletResponse);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            filterChain.doFilter(servletRequest, servletResponse);
+        } catch (Exception e) {
+            e.printStackTrace();
+            servletResponse.getWriter().write("Ocorre um erro no sistema, contate o administrador do sistema: \n" + e.getMessage());
+        }
     }
 
 }
