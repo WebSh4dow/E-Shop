@@ -1,5 +1,6 @@
 package com.loja.virtual.bitwise.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.loja.virtual.bitwise.enums.TipoEndereco;
 import javax.persistence.*;
 import java.io.Serializable;
@@ -35,11 +36,13 @@ public class Endereco implements Serializable {
     @Column(nullable = false)
     private String cidade;
 
+    @JsonIgnore
     @ManyToOne(targetEntity = Pessoa.class)
     @JoinColumn(name = "pessoa_id", nullable = false,
             foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "pessoa_fk"))
     private Pessoa pessoa;
 
+    @JsonIgnore
     @ManyToOne(targetEntity = Pessoa.class)
     @JoinColumn(name = "empresa_id", nullable = false,
             foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))

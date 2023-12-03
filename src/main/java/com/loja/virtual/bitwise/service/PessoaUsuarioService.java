@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.Calendar;
 
 @Service
@@ -20,6 +19,9 @@ public class PessoaUsuarioService {
 
     @Autowired
     private PessoaRepository pessoaRepository;
+
+    @Autowired
+    private ServiceSendEmail serviceSendEmail;
 
     @Autowired
     private JdbcTemplate template;
@@ -40,6 +42,7 @@ public class PessoaUsuarioService {
            if (constraint != null)
                template.execute("begin; alter table usuarios_acesso drop constraint " + constraint + "; commit;" );
         }
+
         usuarioPessoaJuridica = new Usuario();
 
         usuarioPessoaJuridica.setDataAtualSenha(Calendar.getInstance().getTime());
@@ -56,6 +59,20 @@ public class PessoaUsuarioService {
 
         usuarioRepository.insereAcessoUsuarioPessoaJuridica(usuarioPessoaJuridica.getId());
 
+        StringBuilder mensagemEmail = new StringBuilder();
+
+        mensagemEmail.append("<b>Segue abaixo seus dados de acesso para a loja virtual</b>");
+        mensagemEmail.append("<b>Login: </b>" + pessoaJuridica.getEmail() + "</b><br/>");
+        mensagemEmail.append("<b>Senha: </b>").append(senha).append("<br/>");
+        mensagemEmail.append("<b>Seja bem vindo a nossa loja virtual.</b>");
+
+
+        try {
+            serviceSendEmail.enviarEmailHtml("Acesso Gerado para Loja Virtual", mensagemEmail.toString(), pessoaJuridica.getEmail());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return pessoaJuridica;
     }
 }
