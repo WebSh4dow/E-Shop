@@ -30,13 +30,13 @@ public class TestPessoaUsuario extends TestCase {
 
         PessoaJuridica pessoaJuridica = new PessoaJuridica();
 
-        pessoaJuridica.setCnpj("0091244422777881");
+        pessoaJuridica.setCnpj("00023418954");
         pessoaJuridica.setInscricaoEstadual("9920232302932");
-        pessoaJuridica.setNome("dasdad1123");
-        pessoaJuridica.setEmail("1111dasda4432222AAAA423@gmail.com");
+        pessoaJuridica.setNome("jarmison");
+        pessoaJuridica.setEmail("jarmison@gmail.com");
         pessoaJuridica.setTelefone("9920432202932");
-        pessoaJuridica.setNomeFantasia("dasd");
-        pessoaJuridica.setRazaoSocial("cc");
+        pessoaJuridica.setNomeFantasia("PAIVA");
+        pessoaJuridica.setRazaoSocial("PAIVA LTDA");
 
         pessoaController.salvarPessoaJuridica(pessoaJuridica);
     }
