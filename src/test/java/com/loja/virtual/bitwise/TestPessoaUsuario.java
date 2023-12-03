@@ -1,5 +1,7 @@
 package com.loja.virtual.bitwise;
 
+import com.loja.virtual.bitwise.controller.PessoaController;
+import com.loja.virtual.bitwise.exception.ExceptionErro;
 import com.loja.virtual.bitwise.model.PessoaFisica;
 import com.loja.virtual.bitwise.model.PessoaJuridica;
 import com.loja.virtual.bitwise.repository.PessoaRepository;
@@ -20,28 +22,23 @@ public class TestPessoaUsuario extends TestCase {
     @Autowired
     private PessoaRepository pessoaRepository;
 
+    @Autowired
+    private PessoaController pessoaController;
+
     @Test
-    public void testCadastroPessoa() {
+    public void testCadastroPessoa() throws ExceptionErro {
 
         PessoaJuridica pessoaJuridica = new PessoaJuridica();
-        PessoaFisica pessoaFisica = new PessoaFisica();
 
-        pessoaJuridica.setCnpj("3242423423");
-        pessoaJuridica.setInscricaoEstadual("432432423");
-        pessoaJuridica.setNome("Juridica");
-        pessoaJuridica.setEmail("juri@gmail.com");
-        pessoaJuridica.setTelefone("34242424");
-        pessoaJuridica.setNomeFantasia("Juju");
-        pessoaJuridica.setRazaoSocial("JUUU");
+        pessoaJuridica.setCnpj("0091244422777881");
+        pessoaJuridica.setInscricaoEstadual("9920232302932");
+        pessoaJuridica.setNome("dasdad1123");
+        pessoaJuridica.setEmail("1111dasda4432222AAAA423@gmail.com");
+        pessoaJuridica.setTelefone("9920432202932");
+        pessoaJuridica.setNomeFantasia("dasd");
+        pessoaJuridica.setRazaoSocial("cc");
 
-        pessoaRepository.save(pessoaJuridica);
-
-       /* pessoaFisica.setCpf("000000112330");
-        pessoaFisica.setNome("Jubileu");
-        pessoaFisica.setEmail("jubileuestaesqusito@gmail.com");
-        pessoaFisica.setTelefone("12321321312");
-        pessoaFisica.setEmpresa(pessoaFisica);*/
-
+        pessoaController.salvarPessoaJuridica(pessoaJuridica);
     }
 
 
