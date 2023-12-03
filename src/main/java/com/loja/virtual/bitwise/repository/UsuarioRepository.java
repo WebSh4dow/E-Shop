@@ -6,8 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 public interface UsuarioRepository extends CrudRepository<Usuario,Long> {
+    @Query(value = "select u from Usuario u where u.dataAtualSenha <= current_date - 90")
+    List<Usuario> usuarioSenhaExpirada();
     @Query(value = "select u from Usuario u where u.login = ?1")
     Usuario findUsuarioByLogin(String login);
 
@@ -21,4 +24,9 @@ public interface UsuarioRepository extends CrudRepository<Usuario,Long> {
     @Modifying
     @Query(nativeQuery = true, value = "insert into usuarios_acesso(usuario_id, acesso_id) values (?1,(select id from Acesso where descricao = 'ROLE_USER'))")
     void insereAcessoUsuarioPessoaJuridica(Long idUsuario);
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value = "insert into usuarios_acesso(usuario_id, acesso_id) values (?1,(select id from Acesso where descricao = ?2 limit 1))")
+    void insereAcessoUsuarioPessoaJuridica(Long idUsuario, String acesso);
 }

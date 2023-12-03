@@ -33,6 +33,14 @@ public class PessoaController {
             throw new ExceptionErro("Já existe um cnpj cadastrado com o número: " + pessoaJuridica.getCnpj());
         }
 
+        if (pessoaJuridica.getId() == null && pessoaRepository.existeInscricaoEstadual(pessoaJuridica.getInscricaoEstadual()) != null) {
+            throw new ExceptionErro("Já existe uma inscrição estadual cadastrado com o número: " + pessoaJuridica.getInscricaoEstadual());
+        }
+
+        if (pessoaJuridica.getId() == null && pessoaRepository.existeInscricaoMunicipal(pessoaJuridica.getInscricaoMunicipal()) != null) {
+            throw new ExceptionErro("Já existe uma inscrição municipal cadastrado com o número: " + pessoaJuridica.getInscricaoMunicipal());
+        }
+
         pessoaJuridica = pessoaUsuarioService.salvarPessoaJuridica(pessoaJuridica);
 
         return new ResponseEntity<>(pessoaJuridica, HttpStatus.OK);

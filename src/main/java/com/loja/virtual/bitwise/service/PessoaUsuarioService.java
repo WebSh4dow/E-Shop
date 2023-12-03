@@ -58,6 +58,7 @@ public class PessoaUsuarioService {
         usuarioPessoaJuridica = usuarioRepository.save(usuarioPessoaJuridica);
 
         usuarioRepository.insereAcessoUsuarioPessoaJuridica(usuarioPessoaJuridica.getId());
+        usuarioRepository.insereAcessoUsuarioPessoaJuridica(usuarioPessoaJuridica.getId(),"ROLE_ADMIN");
 
         StringBuilder mensagemEmail = new StringBuilder();
 
