@@ -23,26 +23,32 @@ public class PessoaController {
     private PessoaUsuarioService pessoaUsuarioService;
 
     @PostMapping("/salvar/pessoa-juridica")
-    public ResponseEntity<PessoaJuridica> salvarPessoaJuridica(@RequestBody PessoaJuridica pessoaJuridica) throws ExceptionErro {
+    public ResponseEntity<?> salvarPessoaJuridica(@RequestBody PessoaJuridica pessoaJuridica) {
 
-        if (pessoaJuridica == null) {
-            throw new ExceptionErro("Pessoa Juridica deve ser informado no cadastro");
-        }
+       try {
 
-        if (pessoaJuridica.getId() == null && pessoaRepository.existeCnpjCadastrado(pessoaJuridica.getCnpj()) != null) {
-            throw new ExceptionErro("Já existe um cnpj cadastrado com o número: " + pessoaJuridica.getCnpj());
-        }
+           if (pessoaJuridica == null) {
+               ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+           }
 
-        if (pessoaJuridica.getId() == null && pessoaRepository.existeInscricaoEstadual(pessoaJuridica.getInscricaoEstadual()) != null) {
-            throw new ExceptionErro("Já existe uma inscrição estadual cadastrado com o número: " + pessoaJuridica.getInscricaoEstadual());
-        }
+           if (pessoaJuridica.getId() == null && pessoaRepository.existeCnpjCadastrado(pessoaJuridica.getCnpj()) != null) {
+               throw new ExceptionErro("Já existe um cnpj cadastrado com o número: " + pessoaJuridica.getCnpj());
+           }
 
-        if (pessoaJuridica.getId() == null && pessoaRepository.existeInscricaoMunicipal(pessoaJuridica.getInscricaoMunicipal()) != null) {
-            throw new ExceptionErro("Já existe uma inscrição municipal cadastrado com o número: " + pessoaJuridica.getInscricaoMunicipal());
-        }
+           if (pessoaJuridica.getId() == null && pessoaRepository.existeInscricaoEstadual(pessoaJuridica.getInscricaoEstadual()) != null) {
+               throw new ExceptionErro("Já existe uma inscrição estadual cadastrado com o número: " + pessoaJuridica.getInscricaoEstadual());
+           }
 
-        pessoaJuridica = pessoaUsuarioService.salvarPessoaJuridica(pessoaJuridica);
+           if (pessoaJuridica.getId() == null && pessoaRepository.existeInscricaoMunicipal(pessoaJuridica.getInscricaoMunicipal()) != null) {
+               throw new ExceptionErro("Já existe uma inscrição municipal cadastrado com o número: " + pessoaJuridica.getInscricaoMunicipal());
+           }
 
-        return new ResponseEntity<>(pessoaJuridica, HttpStatus.OK);
+           pessoaJuridica = pessoaUsuarioService.salvarPessoaJuridica(pessoaJuridica);
+
+           return ResponseEntity.status(HttpStatus.CREATED).body(pessoaJuridica);
+
+       } catch (ExceptionErro e) {
+           return ResponseEntity.badRequest().body("[Ocorreu um erro na api]: " + e.getMessage());
+       }
     }
 }
