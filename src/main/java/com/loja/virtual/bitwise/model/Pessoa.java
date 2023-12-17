@@ -1,5 +1,7 @@
 package com.loja.virtual.bitwise.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ public abstract class Pessoa implements Serializable {
     private List<Endereco> enderecos = new ArrayList<Endereco>();
 
     @ManyToOne(targetEntity = Pessoa.class)
+    @JsonIdentityInfo(generator= ObjectIdGenerators.UUIDGenerator.class, property="id")
     @JoinColumn(name = "empresa_id", nullable = true,
             foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))
     private Pessoa empresa;

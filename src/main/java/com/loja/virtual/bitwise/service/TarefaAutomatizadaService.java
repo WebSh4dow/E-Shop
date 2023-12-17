@@ -18,9 +18,7 @@ public class TarefaAutomatizadaService {
     @Autowired
     private ServiceSendEmail serviceSendEmail;
 
-
-    //@Scheduled(cron = "0 0 11 * * *", zone = "America/Sao_Paulo")
-    @Scheduled(initialDelay = 2000, fixedDelay = 86400000)
+    @Scheduled(cron = "0 0 11 * * *", zone = "America/Sao_Paulo")
     public void notificarUsuarioTrocaSenha() throws MessagingException, UnsupportedEncodingException, InterruptedException {
         List<Usuario> usuarios = usuarioRepository.usuarioSenhaExpirada();
 
@@ -31,7 +29,7 @@ public class TarefaAutomatizadaService {
             message.append("Está na hora de trocar sua senha, pois o mesmo já passou o limite de 90 dias de validade").append("<br/>");
             message.append("Troque sua senha a loja virtual agradece pela compreensão!!!");
 
-            serviceSendEmail.enviarEmailHtml("Troca de senha foi realizada", message.toString(), usuario.getLogin());
+            serviceSendEmail.enviarEmailHtml("Troca de senha deve ser realizada", message.toString(), usuario.getLogin());
 
             Thread.sleep(3000);
 
