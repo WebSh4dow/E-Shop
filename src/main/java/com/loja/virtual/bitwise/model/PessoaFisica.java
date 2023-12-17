@@ -1,6 +1,7 @@
 package com.loja.virtual.bitwise.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Entity
@@ -11,6 +12,7 @@ public class PessoaFisica extends Pessoa {
     private static final long serialVersionUID = 1L;
 
     @Column(nullable = false)
+    @NotBlank
     private String cpf;
 
     @Temporal(TemporalType.DATE)

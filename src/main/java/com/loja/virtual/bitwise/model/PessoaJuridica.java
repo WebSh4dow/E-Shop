@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "pessoa_juridica")
@@ -13,19 +14,25 @@ public class PessoaJuridica extends Pessoa {
     private static final long serialVersionUID = 1L;
 
     @Column(nullable = false)
+    @NotBlank
     private String cnpj;
 
     @Column(nullable = false)
+    @NotBlank
     private String inscricaoEstadual;
 
+    @NotBlank
     private String inscricaoMunicipal;
 
+    @NotBlank
     @Column(nullable = false)
     private String nomeFantasia;
 
+    @NotBlank
     @Column(nullable = false)
     private String razaoSocial;
 
+    @NotBlank
     private String categoria;
 
     public String getCnpj() {
