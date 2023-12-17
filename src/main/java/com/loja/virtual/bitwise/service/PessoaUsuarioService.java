@@ -105,6 +105,7 @@ public class PessoaUsuarioService {
         Usuario usuarioPj = usuarioRepository.findUserByPessoa(pessoaFisica.getId(), pessoaFisica.getEmail());
 
         String constraint = usuarioRepository.consultarConstraintAcesso();
+
         if (usuarioPj == null && constraint != null) {
             template.execute("begin; alter table usuarios_acesso drop constraint " + constraint + "; commit;");
 
