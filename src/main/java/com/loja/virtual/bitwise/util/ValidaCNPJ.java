@@ -6,7 +6,6 @@ public class ValidaCNPJ {
 
     public static boolean isCNPJ(String CNPJ) {
 
-
         CNPJ = CNPJ.replaceAll("\\.", "").replaceAll("\\/", "").replaceAll("\\-", "");
 
         if (CNPJ.equals("00000000000000") || CNPJ.equals("11111111111111") || CNPJ.equals("22222222222222")
@@ -17,7 +16,6 @@ public class ValidaCNPJ {
 
         char dig13, dig14;
         int sm, i, r, num, peso;
-
 
         try {
 
