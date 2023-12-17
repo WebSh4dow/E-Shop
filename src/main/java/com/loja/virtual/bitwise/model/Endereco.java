@@ -3,6 +3,7 @@ package com.loja.virtual.bitwise.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.loja.virtual.bitwise.enums.TipoEndereco;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -17,23 +18,30 @@ public class Endereco implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "seq_endereco")
     private Long id;
     @Column(nullable = false)
+    @NotBlank(message = "rua logradouro é obrigatório")
     private String ruaLogra;
 
     @Column(nullable = false)
+    @NotBlank(message = "cep é obrigatório")
     private String cep;
 
     @Column(nullable = false)
+    @NotBlank(message = "numero é obrigatório")
     private String numero;
 
+    @NotBlank(message = "complemento é obrigatório")
     private String complemento;
 
     @Column(nullable = false)
+    @NotBlank(message = "bairro é obrigatório")
     private String bairro;
 
     @Column(nullable = false)
+    @NotBlank(message = "uf é obrigatório")
     private String uf;
 
     @Column(nullable = false)
+    @NotBlank(message = "cidade é obrigatório")
     private String cidade;
 
     @JsonIgnore

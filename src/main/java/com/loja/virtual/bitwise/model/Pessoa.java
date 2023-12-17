@@ -3,6 +3,8 @@ package com.loja.virtual.bitwise.model;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +22,15 @@ public abstract class Pessoa implements Serializable {
     private Long id;
 
     @Column(nullable = false)
+    @NotBlank(message = "nome é um campo obrigatório")
     private String nome;
 
     @Column(nullable = false)
+    @Email
     private String email;
 
     @Column(nullable = false)
+    @NotBlank(message = "telefone é um campo obrigatório")
     private String telefone;
 
     @OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)

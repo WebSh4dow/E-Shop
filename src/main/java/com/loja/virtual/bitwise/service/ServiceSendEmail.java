@@ -2,7 +2,6 @@ package com.loja.virtual.bitwise.service;
 
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -12,9 +11,9 @@ import java.util.Properties;
 @Service
 public class ServiceSendEmail {
 
-    private String userMail = "email";
+    private String userMail = "jarmison6@gmail.com";
 
-    private String senha = "senha";
+    private String senha = "jytb qmtx iahj iiwz";
 
     @Async
     public void enviarEmailHtml(String assunto, String mensagem, String emailDestino) throws MessagingException, UnsupportedEncodingException {
