@@ -6,6 +6,7 @@ import com.loja.virtual.bitwise.model.PessoaFisica;
 import com.loja.virtual.bitwise.model.PessoaJuridica;
 import com.loja.virtual.bitwise.model.dto.CepDTO;
 import com.loja.virtual.bitwise.repository.EnderecoRepository;
+import com.loja.virtual.bitwise.repository.PessoaFisicaRepository;
 import com.loja.virtual.bitwise.repository.PessoaRepository;
 import com.loja.virtual.bitwise.service.PessoaUsuarioService;
 import com.loja.virtual.bitwise.util.ValidaCNPJ;
@@ -14,8 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/pessoa")
@@ -29,6 +30,34 @@ public class PessoaController {
 
     @Autowired
     private EnderecoRepository enderecoRepository;
+
+    @Autowired
+    private PessoaFisicaRepository pessoaFisicaRepository;
+
+
+    @GetMapping("/consultar/pessoa-fisica/por-nome/{nome}")
+    public ResponseEntity<List<PessoaFisica>> consultarPessoaFisicaPorNome(@PathVariable String nome) {
+        List<PessoaFisica> pessoasFisicas = pessoaFisicaRepository.pesquisarNomePessoaFisica(nome.trim().toUpperCase());
+        return new ResponseEntity<List<PessoaFisica>>(pessoasFisicas,HttpStatus.OK);
+    }
+
+    @GetMapping("/consultar/pessoa-fisica/por-cpf/{cpf}")
+    public ResponseEntity<List<PessoaFisica>> consultarPessoaFisicaPorCpf(@PathVariable String cpf) {
+        List<PessoaFisica> pessoasFisicas = pessoaFisicaRepository.pesquisarCpfPessoaFisica(cpf);
+        return new ResponseEntity<List<PessoaFisica>>(pessoasFisicas,HttpStatus.OK);
+    }
+
+    @GetMapping("/consultar/pessoa-juridica/por-pj/{nome}")
+    public ResponseEntity<List<PessoaJuridica>> consultarPessoaJuridicaPorNome(@PathVariable String nome) {
+        List<PessoaJuridica> pessoasJuridicas = pessoaRepository.pesquisarNomePessoaJuridica(nome.trim().toUpperCase());
+        return new ResponseEntity<List<PessoaJuridica>>(pessoasJuridicas,HttpStatus.OK);
+    }
+
+    @GetMapping("/consultar/pessoa-juridica/por-cnpj/{cnpj}")
+    public ResponseEntity<List<PessoaJuridica>> consultarPessoaJuridicaPorCnpj(@PathVariable String cnpj) {
+        List<PessoaJuridica> pessoasJuridicas = pessoaRepository.existeCnpjsCadastrados(cnpj.trim().toUpperCase());
+        return new ResponseEntity<List<PessoaJuridica>>(pessoasJuridicas,HttpStatus.OK);
+    }
 
     @GetMapping("/consultar-cep/{cep}")
     public ResponseEntity<CepDTO> consultaCepPessoa(@PathVariable String cep) {
