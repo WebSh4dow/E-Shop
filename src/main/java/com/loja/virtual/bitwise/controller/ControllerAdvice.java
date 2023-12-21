@@ -2,7 +2,10 @@ package com.loja.virtual.bitwise.controller;
 
 import com.loja.virtual.bitwise.exception.ExceptionErro;
 import com.loja.virtual.bitwise.model.dto.ObjetoErroDTO;
+import com.loja.virtual.bitwise.service.ServiceSendEmail;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,11 +17,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.List;
 
 @RestControllerAdvice
-public class ControllerAdviced extends ResponseEntityExceptionHandler {
+public class ControllerAdvice extends ResponseEntityExceptionHandler {
+
+    @Autowired
+    private ServiceSendEmail serviceSendEmail;
 
 
     @ExceptionHandler(ExceptionErro.class)
@@ -53,6 +62,14 @@ public class ControllerAdviced extends ResponseEntityExceptionHandler {
 
         objetoErroDTO.setError(message);
         objetoErroDTO.setCode(status.value() + "[ERRO]: " + status.getReasonPhrase());
+
+        try {
+            serviceSendEmail.enviarEmailHtml("Erro na loja virtual",
+                    ExceptionUtils.getStackTrace(ex), "jarmison6@gmail.com");
+
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
 
         return new ResponseEntity<Object>(objetoErroDTO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
