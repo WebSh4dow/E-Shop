@@ -1,20 +1,19 @@
 package com.loja.virtual.bitwise.controller;
 
 import com.loja.virtual.bitwise.exception.ExceptionErro;
+import com.loja.virtual.bitwise.model.Endereco;
 import com.loja.virtual.bitwise.model.PessoaFisica;
 import com.loja.virtual.bitwise.model.PessoaJuridica;
+import com.loja.virtual.bitwise.model.dto.CepDTO;
+import com.loja.virtual.bitwise.repository.EnderecoRepository;
 import com.loja.virtual.bitwise.repository.PessoaRepository;
 import com.loja.virtual.bitwise.service.PessoaUsuarioService;
 import com.loja.virtual.bitwise.util.ValidaCNPJ;
 import com.loja.virtual.bitwise.util.ValidaCPF;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -27,6 +26,15 @@ public class PessoaController {
 
     @Autowired
     private PessoaUsuarioService pessoaUsuarioService;
+
+    @Autowired
+    private EnderecoRepository enderecoRepository;
+
+    @GetMapping("/consultar-cep/{cep}")
+    public ResponseEntity<CepDTO> consultaCepPessoa(@PathVariable String cep) {
+        CepDTO cepDTO = pessoaUsuarioService.consultaCepPessoa(cep);
+        return new ResponseEntity<CepDTO>(cepDTO,HttpStatus.OK);
+    }
 
     @PostMapping("/salvar/pessoa-juridica")
     public ResponseEntity<?> salvarPessoaJuridica(@RequestBody @Valid PessoaJuridica pessoaJuridica) {
@@ -50,6 +58,32 @@ public class PessoaController {
 
             if (!ValidaCNPJ.isCNPJ(pessoaJuridica.getCnpj())) {
                 throw new ExceptionErro("CNPJ: " + pessoaJuridica.getCnpj() + " está inválido.");
+            }
+
+            if (pessoaJuridica.getId() == null || pessoaJuridica.getId() <= 0) {
+                for (int i = 0; i < pessoaJuridica.getEnderecos().size(); i++) {
+                    CepDTO cepDTO = pessoaUsuarioService.consultaCepPessoa(pessoaJuridica.getEnderecos().get(i).getCep());
+
+                    pessoaJuridica.getEnderecos().get(i).setBairro(cepDTO.getBairro());
+                    pessoaJuridica.getEnderecos().get(i).setCidade(cepDTO.getLocalidade());
+                    pessoaJuridica.getEnderecos().get(i).setComplemento(cepDTO.getComplemento());
+                    pessoaJuridica.getEnderecos().get(i).setRuaLogra(cepDTO.getLogradouro());
+                    pessoaJuridica.getEnderecos().get(i).setUf(cepDTO.getUf());
+
+                }
+            } else {
+                for (int i = 0; i < pessoaJuridica.getEnderecos().size(); i++) {
+                    Endereco enderecos = enderecoRepository.findById(pessoaJuridica.getEnderecos().get(i).getId()).get();
+                    if (!enderecos.getCep().equals(pessoaJuridica.getEnderecos().get(i).getCep())) {
+                        CepDTO cepDTO = pessoaUsuarioService.consultaCepPessoa(pessoaJuridica.getEnderecos().get(i).getCep());
+
+                        pessoaJuridica.getEnderecos().get(i).setBairro(cepDTO.getBairro());
+                        pessoaJuridica.getEnderecos().get(i).setCidade(cepDTO.getLocalidade());
+                        pessoaJuridica.getEnderecos().get(i).setComplemento(cepDTO.getComplemento());
+                        pessoaJuridica.getEnderecos().get(i).setRuaLogra(cepDTO.getLogradouro());
+                        pessoaJuridica.getEnderecos().get(i).setUf(cepDTO.getUf());
+                    }
+                }
             }
 
             pessoaJuridica = pessoaUsuarioService.salvarPessoaJuridica(pessoaJuridica);
@@ -77,6 +111,32 @@ public class PessoaController {
 
             if (!ValidaCPF.isCPF(pessoaFisica.getCpf())) {
                 throw new ExceptionErro("CPF: " + pessoaFisica.getCpf() + " está inválido.");
+            }
+
+            if (pessoaFisica.getId() == null || pessoaFisica.getId() <= 0) {
+                for (int i = 0; i < pessoaFisica.getEnderecos().size(); i++) {
+                    CepDTO cepDTO = pessoaUsuarioService.consultaCepPessoa(pessoaFisica.getEnderecos().get(i).getCep());
+
+                    pessoaFisica.getEnderecos().get(i).setBairro(cepDTO.getBairro());
+                    pessoaFisica.getEnderecos().get(i).setCidade(cepDTO.getLocalidade());
+                    pessoaFisica.getEnderecos().get(i).setComplemento(cepDTO.getComplemento());
+                    pessoaFisica.getEnderecos().get(i).setRuaLogra(cepDTO.getLogradouro());
+                    pessoaFisica.getEnderecos().get(i).setUf(cepDTO.getUf());
+
+                }
+            } else {
+                for (int i = 0; i < pessoaFisica.getEnderecos().size(); i++) {
+                    Endereco enderecos = enderecoRepository.findById(pessoaFisica.getEnderecos().get(i).getId()).get();
+                    if (!enderecos.getCep().equals(pessoaFisica.getEnderecos().get(i).getCep())) {
+                        CepDTO cepDTO = pessoaUsuarioService.consultaCepPessoa(pessoaFisica.getEnderecos().get(i).getCep());
+
+                        pessoaFisica.getEnderecos().get(i).setBairro(cepDTO.getBairro());
+                        pessoaFisica.getEnderecos().get(i).setCidade(cepDTO.getLocalidade());
+                        pessoaFisica.getEnderecos().get(i).setComplemento(cepDTO.getComplemento());
+                        pessoaFisica.getEnderecos().get(i).setRuaLogra(cepDTO.getLogradouro());
+                        pessoaFisica.getEnderecos().get(i).setUf(cepDTO.getUf());
+                    }
+                }
             }
 
             pessoaFisica = pessoaUsuarioService.salvarPessoaFisica(pessoaFisica);
