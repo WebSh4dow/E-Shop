@@ -2,6 +2,7 @@ package com.loja.virtual.bitwise.service;
 
 
 import com.loja.virtual.bitwise.model.*;
+import com.loja.virtual.bitwise.model.dto.CepDTO;
 import com.loja.virtual.bitwise.repository.PessoaFisicaRepository;
 import com.loja.virtual.bitwise.repository.PessoaRepository;
 import com.loja.virtual.bitwise.repository.UsuarioRepository;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
 import javax.persistence.EntityNotFoundException;
 import java.util.Calendar;
 
@@ -149,4 +152,7 @@ public class PessoaUsuarioService {
         return pessoaFisica;
     }
 
+    public CepDTO consultaCepPessoa(String cep) {
+        return new RestTemplate().getForEntity("https://viacep.com.br/ws/" + cep + "/json/", CepDTO.class).getBody();
+    }
 }
