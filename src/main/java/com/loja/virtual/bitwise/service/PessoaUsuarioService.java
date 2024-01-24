@@ -3,6 +3,7 @@ package com.loja.virtual.bitwise.service;
 
 import com.loja.virtual.bitwise.model.*;
 import com.loja.virtual.bitwise.model.dto.CepDTO;
+import com.loja.virtual.bitwise.model.dto.ConsultaCnpjDto;
 import com.loja.virtual.bitwise.repository.PessoaFisicaRepository;
 import com.loja.virtual.bitwise.repository.PessoaRepository;
 import com.loja.virtual.bitwise.repository.UsuarioRepository;
@@ -154,5 +155,10 @@ public class PessoaUsuarioService {
 
     public CepDTO consultaCepPessoa(String cep) {
         return new RestTemplate().getForEntity("https://viacep.com.br/ws/" + cep + "/json/", CepDTO.class).getBody();
+    }
+
+    public ConsultaCnpjDto consultaCnpjReceitaWs(String cnpj) {
+        return new RestTemplate().getForEntity("https://receitaws.com.br/v1/cnpj/" + cnpj, ConsultaCnpjDto.class).getBody();
+
     }
 }
