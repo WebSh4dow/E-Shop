@@ -1,10 +1,12 @@
 package com.loja.virtual.bitwise.controller;
 
+import com.loja.virtual.bitwise.enums.TipoPessoa;
 import com.loja.virtual.bitwise.exception.ExceptionErro;
 import com.loja.virtual.bitwise.model.Endereco;
 import com.loja.virtual.bitwise.model.PessoaFisica;
 import com.loja.virtual.bitwise.model.PessoaJuridica;
 import com.loja.virtual.bitwise.model.dto.CepDTO;
+import com.loja.virtual.bitwise.model.dto.ConsultaCnpjDto;
 import com.loja.virtual.bitwise.repository.EnderecoRepository;
 import com.loja.virtual.bitwise.repository.PessoaFisicaRepository;
 import com.loja.virtual.bitwise.repository.PessoaRepository;
@@ -33,7 +35,6 @@ public class PessoaController {
 
     @Autowired
     private PessoaFisicaRepository pessoaFisicaRepository;
-
 
     @GetMapping("/consultar/pessoa-fisica/por-nome/{nome}")
     public ResponseEntity<List<PessoaFisica>> consultarPessoaFisicaPorNome(@PathVariable String nome) {
@@ -65,12 +66,23 @@ public class PessoaController {
         return new ResponseEntity<CepDTO>(cepDTO,HttpStatus.OK);
     }
 
+    @GetMapping("/consultar-cnpj-receita-aws/{cnpj}")
+    public ResponseEntity<ConsultaCnpjDto> consultaReceitaWs(@PathVariable String cnpj) {
+        ConsultaCnpjDto consultaCnpjReceitaWs = pessoaUsuarioService.consultaCnpjReceitaWs(cnpj);
+        return new ResponseEntity<ConsultaCnpjDto>(consultaCnpjReceitaWs,HttpStatus.OK);
+    }
+
     @PostMapping("/salvar/pessoa-juridica")
     public ResponseEntity<?> salvarPessoaJuridica(@RequestBody @Valid PessoaJuridica pessoaJuridica) {
         try {
 
             if (pessoaJuridica == null) {
                 ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+
+            if (pessoaJuridica.getTipoPessoa() == null) {
+                throw new ExceptionErro("Informe o tipo Jurídico ou Fornecedor da loja virtual");
+
             }
 
             if (pessoaJuridica.getId() == null && pessoaRepository.existeCnpjCadastrado(pessoaJuridica.getCnpj()) != null) {
@@ -132,6 +144,10 @@ public class PessoaController {
 
             if (pessoaFisica == null) {
                 ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+
+            if (pessoaFisica.getTipoPessoa() == null) {
+                pessoaFisica.setTipoPessoa(TipoPessoa.valueOf(TipoPessoa.FISICA.name()));
             }
 
             if (pessoaFisica.getId() == null && pessoaRepository.existeCpfCadastrado(pessoaFisica.getCpf()) != null) {

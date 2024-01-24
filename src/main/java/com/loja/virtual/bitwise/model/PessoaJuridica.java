@@ -1,9 +1,8 @@
 package com.loja.virtual.bitwise.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
+import com.loja.virtual.bitwise.enums.TipoPessoa;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -34,6 +33,17 @@ public class PessoaJuridica extends Pessoa {
 
     @NotBlank
     private String categoria;
+
+    @Enumerated(EnumType.STRING)
+    private TipoPessoa tipoPessoa;
+
+    public TipoPessoa getTipoPessoa() {
+        return tipoPessoa;
+    }
+
+    public void setTipoPessoa(TipoPessoa tipoPessoa) {
+        this.tipoPessoa = tipoPessoa;
+    }
 
     public String getCnpj() {
         return cnpj;
