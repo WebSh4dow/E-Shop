@@ -1,1 +1,3 @@
+# Loja Virtual
 
+- projeto de uma loja eletronica no momento em desenvolvimento...
