@@ -1,6 +1,8 @@
 package com.loja.virtual.bitwise.model;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.loja.virtual.bitwise.enums.TipoPessoa;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -9,6 +11,12 @@ import java.util.Date;
 @Entity
 @Table(name = "pessoa_fisica")
 @PrimaryKeyJoinColumn(name = "id")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+
 public class PessoaFisica extends Pessoa {
 
     private static final long serialVersionUID = 1L;
@@ -20,16 +28,7 @@ public class PessoaFisica extends Pessoa {
     @Temporal(TemporalType.DATE)
     private Date dataNascimento;
 
-    @Enumerated(EnumType.STRING)
-    private TipoPessoa tipoPessoa;
 
-    public TipoPessoa getTipoPessoa() {
-        return tipoPessoa;
-    }
-
-    public void setTipoPessoa(TipoPessoa tipoPessoa) {
-        this.tipoPessoa = tipoPessoa;
-    }
 
     public String getCpf() {
         return cpf;

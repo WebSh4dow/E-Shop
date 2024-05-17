@@ -39,7 +39,6 @@ public class AcessoController {
     }
 
     @DeleteMapping(value = "/removerAcessoPorId/{id}")
-    //@Secured({"ROLE_GERENTE","ROLE_ADMIN"})
     public ResponseEntity<?> removerAcessoPorId(@PathVariable Long id) {
         acessoService.remover(id);
         return new ResponseEntity<>("Acesso removido com sucesso!!!", HttpStatus.OK);

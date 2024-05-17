@@ -1,7 +1,8 @@
 package com.loja.virtual.bitwise.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
+import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -12,7 +13,15 @@ import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@SequenceGenerator(name = "seq_pessoa",sequenceName = "seq_pessoa",initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "seq_pessoa", sequenceName = "seq_pessoa", initialValue = 1, allocationSize = 1)
+@Getter
+@Setter
+@NoArgsConstructor
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "tipoPessoa")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = PessoaFisica.class, name = "pessoaFisica"),
+        @JsonSubTypes.Type(value = PessoaJuridica.class, name = "pessoaJuridica")
+})
 public abstract class Pessoa implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,6 +38,10 @@ public abstract class Pessoa implements Serializable {
     @Email
     private String email;
 
+    @Column
+    private String tipoPessoa;
+
+
     @Column(nullable = false)
     @NotBlank(message = "telefone é um campo obrigatório")
     private String telefone;
@@ -36,11 +49,38 @@ public abstract class Pessoa implements Serializable {
     @OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Endereco> enderecos = new ArrayList<Endereco>();
 
-    @ManyToOne(targetEntity = Pessoa.class)
-    @JsonIdentityInfo(generator= ObjectIdGenerators.UUIDGenerator.class, property="id")
+    @ManyToOne
+   // @JsonIdentityInfo(generator= ObjectIdGenerators.UUIDGenerator.class, property="id")
     @JoinColumn(name = "empresa_id", nullable = true,
             foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))
     private Pessoa empresa;
+
+
+    @JsonCreator
+    public Pessoa(@JsonProperty("id") Long id,
+                  @JsonProperty("nome") String nome,
+                  @JsonProperty("email") String email,
+                  @JsonProperty("tipoPessoa") String tipoPessoa,
+                  @JsonProperty("telefone") String telefone,
+                  @JsonProperty("enderecos") List<Endereco> enderecos,
+                  @JsonProperty("empresa") Pessoa empresa) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.tipoPessoa = tipoPessoa;
+        this.telefone = telefone;
+        this.enderecos = enderecos;
+        this.empresa = empresa;
+    }
+
+
+    public String getTipoPessoa() {
+        return tipoPessoa;
+    }
+
+    public void setTipoPessoa(String tipoPessoa) {
+        this.tipoPessoa = tipoPessoa;
+    }
 
 
     public Pessoa getEmpresa() {
