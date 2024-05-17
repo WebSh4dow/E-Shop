@@ -1,5 +1,6 @@
 package com.loja.virtual.bitwise.model;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.loja.virtual.bitwise.enums.TipoPessoa;
 
 import javax.persistence.*;
@@ -34,16 +35,6 @@ public class PessoaJuridica extends Pessoa {
     @NotBlank
     private String categoria;
 
-    @Enumerated(EnumType.STRING)
-    private TipoPessoa tipoPessoa;
-
-    public TipoPessoa getTipoPessoa() {
-        return tipoPessoa;
-    }
-
-    public void setTipoPessoa(TipoPessoa tipoPessoa) {
-        this.tipoPessoa = tipoPessoa;
-    }
 
     public String getCnpj() {
         return cnpj;

@@ -38,7 +38,7 @@ class ApplicationTests extends TestCase {
 	private static String REQUEST_MAPPING_ACESSOS = "/acessos";
 
 	@Test
-	void testRestApiCadastroAcesso() throws JsonProcessingException, Exception {
+    public void testRestApiCadastroAcesso() throws JsonProcessingException, Exception {
 		DefaultMockMvcBuilder defaultMockMvcBuilder = MockMvcBuilders.webAppContextSetup(this.webApplicationContext);
 		MockMvc mockMvc = defaultMockMvcBuilder.build();
 
@@ -63,7 +63,7 @@ class ApplicationTests extends TestCase {
 	}
 
 	@Test
-	void testRestApiRemoverAcesso() throws JsonProcessingException, Exception {
+    public void testRestApiRemoverAcesso() throws JsonProcessingException, Exception {
 		DefaultMockMvcBuilder defaultMockMvcBuilder = MockMvcBuilders.webAppContextSetup(this.webApplicationContext);
 		MockMvc mockMvc = defaultMockMvcBuilder.build();
 
@@ -89,7 +89,7 @@ class ApplicationTests extends TestCase {
 	}
 
 	@Test
-	void testRestApiRemoverAcessoPorId() throws JsonProcessingException, Exception {
+    public void testRestApiRemoverAcessoPorId() throws JsonProcessingException, Exception {
 		DefaultMockMvcBuilder defaultMockMvcBuilder = MockMvcBuilders.webAppContextSetup(this.webApplicationContext);
 		MockMvc mockMvc = defaultMockMvcBuilder.build();
 
@@ -116,7 +116,7 @@ class ApplicationTests extends TestCase {
 
 
 	@Test
-	void testRestApiBuscarAcessoPorId() throws JsonProcessingException, Exception {
+    public void testRestApiBuscarAcessoPorId() throws JsonProcessingException, Exception {
 		DefaultMockMvcBuilder defaultMockMvcBuilder = MockMvcBuilders.webAppContextSetup(this.webApplicationContext);
 		MockMvc mockMvc = defaultMockMvcBuilder.build();
 
@@ -144,7 +144,7 @@ class ApplicationTests extends TestCase {
 	}
 
 	@Test
-	void testRestApiBuscarAcessoPorDescricao() throws JsonProcessingException, Exception {
+    public void testRestApiBuscarAcessoPorDescricao() throws JsonProcessingException, Exception {
 		DefaultMockMvcBuilder defaultMockMvcBuilder = MockMvcBuilders.webAppContextSetup(this.webApplicationContext);
 		MockMvc mockMvc = defaultMockMvcBuilder.build();
 
@@ -174,7 +174,7 @@ class ApplicationTests extends TestCase {
 	}
 
 	@Test
-	void testeCadastroAcesso() throws ExceptionErro {
+    public void testeCadastroAcesso() throws ExceptionErro {
 		Acesso acesso = new Acesso();
 
 		acesso.setDescricao("ROLE_NORMAL");

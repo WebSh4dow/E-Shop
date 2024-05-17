@@ -147,7 +147,7 @@ public class PessoaController {
             }
 
             if (pessoaFisica.getTipoPessoa() == null) {
-                pessoaFisica.setTipoPessoa(TipoPessoa.valueOf(TipoPessoa.FISICA.name()));
+                pessoaFisica.setTipoPessoa(String.valueOf(TipoPessoa.valueOf(TipoPessoa.FISICA.name())));
             }
 
             if (pessoaFisica.getId() == null && pessoaRepository.existeCpfCadastrado(pessoaFisica.getCpf()) != null) {
