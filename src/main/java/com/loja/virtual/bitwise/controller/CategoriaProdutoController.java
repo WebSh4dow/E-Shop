@@ -1,6 +1,7 @@
 package com.loja.virtual.bitwise.controller;
 
 import com.loja.virtual.bitwise.exception.ExceptionErro;
+import com.loja.virtual.bitwise.model.Acesso;
 import com.loja.virtual.bitwise.model.CategoriaProduto;
 import com.loja.virtual.bitwise.model.Pessoa;
 import com.loja.virtual.bitwise.model.dto.CategoriaProdutoDto;
@@ -12,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -23,6 +26,20 @@ public class CategoriaProdutoController {
 
     @Autowired
     private PessoaRepository pessoaRepository;
+
+    @GetMapping(value = "/buscarPor/{descricao}")
+    public ResponseEntity<?> buscarPorDescricao(@PathVariable String descricao) {
+        List<CategoriaProduto> categoriaProdutos = categoriaProdutoRepository.buscarCategoriaProdutoPor(descricao.toUpperCase());
+        return new ResponseEntity<>(categoriaProdutos, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/remover/{categoriaId}")
+    public ResponseEntity<?> removerCategoriaProduto(@PathVariable Long categoriaId) {
+        Optional <CategoriaProduto> categoriaProduto = categoriaProdutoRepository.findById(categoriaId);
+        categoriaProduto.ifPresent(produto -> categoriaProdutoRepository.delete(produto));
+
+        return new ResponseEntity<>("Categoria de Produto removida com sucesso!!!", HttpStatus.NO_CONTENT);
+    }
 
     @PostMapping("/salvar-categoria-produto")
     public ResponseEntity<?> salvarCategoria(@Validated @RequestBody CategoriaProdutoDto categoriaProdutoDto) {
