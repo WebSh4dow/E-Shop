@@ -1,6 +1,7 @@
 package com.loja.virtual.bitwise.service;
 
 
+import com.loja.virtual.bitwise.exception.ExceptionErro;
 import com.loja.virtual.bitwise.model.*;
 import com.loja.virtual.bitwise.model.dto.CepDTO;
 import com.loja.virtual.bitwise.model.dto.ConsultaCnpjDto;
@@ -12,8 +13,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import javax.persistence.EntityNotFoundException;
 import java.util.Calendar;
 
 @Service
@@ -91,7 +90,7 @@ public class PessoaUsuarioService {
     public PessoaFisica salvarPessoaFisica(PessoaFisica pessoaFisica) {
 
         PessoaJuridica empresaPadrao = pessoaRepository.buscarEmpresaPadrao(EMPRESA_PADRAO)
-                .orElseThrow(() -> new EntityNotFoundException("Empresa padrão não encontrada"));
+                .orElseThrow(() -> new ExceptionErro("Empresa padrão não encontrada"));
 
         if (empresaPadrao.getId() == null) {
             empresaPadrao = pessoaRepository.save(empresaPadrao);

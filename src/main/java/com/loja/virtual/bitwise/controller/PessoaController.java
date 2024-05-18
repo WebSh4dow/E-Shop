@@ -16,8 +16,8 @@ import com.loja.virtual.bitwise.util.ValidaCPF;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -73,7 +73,7 @@ public class PessoaController {
     }
 
     @PostMapping("/salvar/pessoa-juridica")
-    public ResponseEntity<?> salvarPessoaJuridica(@RequestBody @Valid PessoaJuridica pessoaJuridica) {
+    public ResponseEntity<?> salvarPessoaJuridica(@RequestBody @Validated PessoaJuridica pessoaJuridica) {
         try {
 
             if (pessoaJuridica == null) {
@@ -138,7 +138,7 @@ public class PessoaController {
 
 
     @PostMapping("/salvar/pessoa-fisica")
-    public ResponseEntity<?> salvarPessoaFisica(@RequestBody @Valid PessoaFisica pessoaFisica) {
+    public ResponseEntity<?> salvarPessoaFisica(@RequestBody @Validated PessoaFisica pessoaFisica) {
 
         try {
 
